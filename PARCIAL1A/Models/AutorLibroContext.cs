@@ -6,7 +6,7 @@ namespace PARCIAL1A.Models
     {
         public AutorLibroContext(DbContextOptions<AutorLibroContext> options) : base(options) { }
 
-        public DbSet<AutorLibro> autorLibros { get; set; }
+        public DbSet<AutorLibro> autorLibro { get; set; }
 
     }
 }

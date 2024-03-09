@@ -2,9 +2,9 @@
 
 namespace PARCIAL1A.Models
 {
-    public class Parcial1aContext
+    public class Parcial1aContext : DbContext
     {
-        public Parcial1aContext()
+        public Parcial1aContext(DbContextOptions<Parcial1aContext> options) : base(options)
         {
 
         }
