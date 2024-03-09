@@ -87,5 +87,33 @@ namespace PARCIAL1A.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("Listado")]
+        public IActionResult Get()
+        {
+            var ListadoPost = (from p in context.posts
+                                 join a in context.autores
+                                    on p.Id equals p.Id
+                                    
+                                    select new
+                                    {
+                                        p.Id,
+                                        p.Titulo,
+                                        a.Nombre
+
+                                    })
+                                    .Take(20).ToList();
+
+            if(ListadoPost.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(ListadoPost);
+
+
+        }
+
     }
 }
