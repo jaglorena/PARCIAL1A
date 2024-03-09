@@ -19,7 +19,7 @@ namespace PARCIAL1A.Controllers
         [Route("obtenerTodos")]
         public IActionResult Get()
         {
-            List<AutorLibro> librosPorAutor = (from p in context.autorLibros select p).ToList();
+            List<AutorLibro> librosPorAutor = (from p in context.autorLibro select p).ToList();
 
             if (librosPorAutor.Count == 0) return NotFound();
 
@@ -30,7 +30,7 @@ namespace PARCIAL1A.Controllers
         [Route("obtenerPorId/{id}")]
         public IActionResult Get(int id)
         {
-            AutorLibro? librosPorAutor = (from p in context.autorLibros
+            AutorLibro? librosPorAutor = (from p in context.autorLibro
                             where p.LibroId == id
                             select p).FirstOrDefault();
 
@@ -43,14 +43,14 @@ namespace PARCIAL1A.Controllers
         [Route("eliminar/{id}")]
         public IActionResult Delete(int id)
         {
-            AutorLibro? librosPorAutor = (from p in context.autorLibros
+            AutorLibro? librosPorAutor = (from p in context.autorLibro
                            where p.LibroId == id
                            select p).FirstOrDefault();
 
             if (librosPorAutor == null) return NotFound();
 
-            context.autorLibros.Attach(librosPorAutor);
-            context.autorLibros.Remove(librosPorAutor);
+            context.autorLibro.Attach(librosPorAutor);
+            context.autorLibro.Remove(librosPorAutor);
             context.SaveChanges();
 
             return Ok(librosPorAutor);
@@ -60,7 +60,7 @@ namespace PARCIAL1A.Controllers
         [Route("actualizar/{id}")]
         public IActionResult actualizar(int id, [FromBody] AutorLibro libroPorAutor)
         {
-            AutorLibro? libroPorAutorActual = (from p in context.autorLibros
+            AutorLibro? libroPorAutorActual = (from p in context.autorLibro
                                  where p.LibroId == id
                                  select p).FirstOrDefault();
 
@@ -80,7 +80,7 @@ namespace PARCIAL1A.Controllers
         {
             try
             {
-                context.autorLibros.Add(libroPorAutor);
+                context.autorLibro.Add(libroPorAutor);
                 context.SaveChanges();
                 return Ok(libroPorAutor);
             }

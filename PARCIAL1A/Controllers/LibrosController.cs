@@ -9,10 +9,12 @@ namespace PARCIAL1A.Controllers
     public class LibrosController : ControllerBase
     {
         private readonly LibrosContext context;
-
-        public LibrosController(LibrosContext context)
+        private readonly Parcial1aContext parcial1AContext;
+        
+        public LibrosController(LibrosContext context, Parcial1aContext parcial1AContext)
         {
             this.context = context;
+            this.parcial1AContext = parcial1AContext;
         }
 
         [HttpGet]
@@ -88,6 +90,29 @@ namespace PARCIAL1A.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("obtenerPorNombreAutor/{nombre}")]
+        public IActionResult Get(string nombre)
+        {
+            var libros = (from l in parcial1AContext.Libros
+                          join j in parcial1AContext.AutorLibro
+                                on l.Id equals j.LibroId
+                          join a in parcial1AContext.Autores 
+                                on j.AutorId equals a.Id
+                          where 
+                            a.Nombre.Contains(nombre)
+                          select new
+                          {
+                              l.Titulo,
+                              a.Nombre,
+                          }
+                              ).FirstOrDefault();
+
+            if (libros == null) return NotFound();
+
+            return Ok(libros);
         }
     }
 }

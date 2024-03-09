@@ -27,6 +27,10 @@ builder.Services.AddDbContext<AutoresContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("parcial1Dbconnection"))
 );
 
+builder.Services.AddDbContext<Parcial1aContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("parcial1Dbconnection"))
+);
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
