@@ -9,10 +9,12 @@ namespace PARCIAL1A.Controllers
     public class PostsController : ControllerBase
     {
         private readonly PostsContext context;
+        private readonly Parcial1aContext parcial1AContext;
 
-        public PostsController(PostsContext context)
+        public PostsController(PostsContext context,  Parcial1aContext parcial1AContext)
         {
             this.context = context;
+            this.parcial1AContext = parcial1AContext;
         }
 
         [HttpGet]
@@ -90,11 +92,11 @@ namespace PARCIAL1A.Controllers
 
         [HttpGet]
         [Route("Listado")]
-        public IActionResult Get()
+        public IActionResult listado()
         {
-            var ListadoPost = (from p in context.posts
-                                 join a in context.autores
-                                    on p.Id equals p.Id
+            var ListadoPost = (from p in parcial1AContext.Posts
+                                 join a in parcial1AContext.Autores
+                                    on p.AutorId equals a.Id
                                     
                                     select new
                                     {
@@ -103,7 +105,7 @@ namespace PARCIAL1A.Controllers
                                         a.Nombre
 
                                     })
-                                    .Take(20).ToList();
+                                    .Take(20).OrderByDescending(nombre => nombre.Nombre).ToList();
 
             if(ListadoPost.Count() == 0)
             {
