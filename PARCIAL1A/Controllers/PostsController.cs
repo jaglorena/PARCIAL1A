@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using PARCIAL1A.Models;
 
@@ -54,6 +54,38 @@ namespace PARCIAL1A.Controllers
             context.SaveChanges();
 
             return Ok(post);
+        }
+
+        [HttpPut]
+        [Route("actualizar/{id}")]
+        public IActionResult actualizar(int id, [FromBody] Posts post) {
+            Posts? postActual = (from p in context.posts
+                           where p.Id == id
+                           select p).FirstOrDefault();
+
+            if (postActual == null) return NotFound();
+
+            postActual.Titulo = post.Titulo;
+            postActual.Contenido = post.Contenido;
+            context.Entry(postActual).State = EntityState.Modified;
+            context.SaveChanges();
+
+            return Ok(postActual);
+
+        }
+
+        [HttpPost]
+        [Route("agregar")]
+        public IActionResult agregar([FromBody] Posts posts) {
+            try
+            {
+                context.posts.Add(posts);
+                context.SaveChanges();
+                return Ok(posts);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
